@@ -10,7 +10,9 @@ import {
   Post,
 } from "@nestjs/common";
 import { TasksService } from "./tasks.service";
-import { Task } from "./task.model";
+import { CreateTaskDto, Task } from "./task.model";
+
+const TASK_NOT_FOUND_MSG = "Task with such Id does not exist";
 
 @Controller("tasks")
 export class TasksController {
@@ -28,11 +30,11 @@ export class TasksController {
       return task;
     }
 
-    throw new HttpException("Wrong task id", HttpStatus.NOT_FOUND);
+    throw new HttpException(TASK_NOT_FOUND_MSG, HttpStatus.NOT_FOUND);
   }
 
   @Post()
-  createTask(@Body() task: Task) {
+  createTask(@Body() task: CreateTaskDto) {
     return this.tasksService.createTask(task);
   }
 
@@ -43,7 +45,7 @@ export class TasksController {
       return updatedTask;
     }
 
-    throw new HttpException("Wrong task id", HttpStatus.NOT_FOUND);
+    throw new HttpException(TASK_NOT_FOUND_MSG, HttpStatus.NOT_FOUND);
   }
 
   @Delete(":id")
@@ -53,6 +55,6 @@ export class TasksController {
       return removedTask;
     }
 
-    throw new HttpException("Wrong task id", HttpStatus.NOT_FOUND);
+    throw new HttpException(TASK_NOT_FOUND_MSG, HttpStatus.NOT_FOUND);
   }
 }
