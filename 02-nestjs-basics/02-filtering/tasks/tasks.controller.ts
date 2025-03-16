@@ -16,4 +16,3 @@ export class TasksController {
   ) {
     return this.tasksService.getTasks(status, page, limit, sortBy);
   }
-}
