@@ -12,3 +12,8 @@ export interface Task {
 }
 
 export type SortBy = Extract<keyof Task, "title" | "status">;
+
+export enum SortByEnum {
+  title = "title",
+  status = "status",
+}
