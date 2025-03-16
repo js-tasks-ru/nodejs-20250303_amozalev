@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { Task, TaskStatus } from "./task.model";
+import { SortBy, Task, TaskStatus } from "./task.model";
 
 @Injectable()
 export class TasksService {
@@ -36,13 +36,19 @@ export class TasksService {
     },
   ];
 
-  getTasks(status?: TaskStatus, page?: number, limit?: number): Task[] {
+  getTasks(
+    status?: TaskStatus,
+    page?: number,
+    limit?: number,
+    sortBy?: SortBy,
+  ): Task[] {
     if (page * limit >= this.tasks.length) {
       return [];
     }
 
     let tasksCount = 0;
     const tasks: Task[] = [];
+
     this.tasks.every((task) => {
       if (page && limit && tasksCount === page * limit) {
         return false;
@@ -55,12 +61,12 @@ export class TasksService {
       return true;
     });
 
+    if (sortBy) {
+      tasks.sort((taskA, taskB) =>
+        taskA?.[sortBy]?.localeCompare(taskB?.[sortBy], ["en"]),
+      );
+    }
+
     return tasks;
   }
-
-  // getFilteredTasks(
-  //   status?: TaskStatus,
-  //   page?: number,
-  //   limit?: number,
-  // ): Task[] {}
 }
