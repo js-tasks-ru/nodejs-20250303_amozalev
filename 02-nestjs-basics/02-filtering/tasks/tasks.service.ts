@@ -36,9 +36,31 @@ export class TasksService {
     },
   ];
 
-  getFilteredTasks(
-    status?: TaskStatus,
-    page?: number,
-    limit?: number,
-  ): Task[] {}
+  getTasks(status?: TaskStatus, page?: number, limit?: number): Task[] {
+    if (page * limit >= this.tasks.length) {
+      return [];
+    }
+
+    let tasksCount = 0;
+    const tasks: Task[] = [];
+    this.tasks.every((task) => {
+      if (page && limit && tasksCount === page * limit) {
+        return false;
+      }
+
+      if (!status || (status && task.status === status)) {
+        tasks.push(task);
+        tasksCount++;
+      }
+      return true;
+    });
+
+    return tasks;
+  }
+
+  // getFilteredTasks(
+  //   status?: TaskStatus,
+  //   page?: number,
+  //   limit?: number,
+  // ): Task[] {}
 }

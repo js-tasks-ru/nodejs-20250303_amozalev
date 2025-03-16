@@ -11,5 +11,7 @@ export class TasksController {
     @Query("status") status?: TaskStatus,
     @Query("page") page?: number,
     @Query("limit") limit?: number,
-  ) {}
+  ) {
+    return this.tasksService.getTasks(status, page, limit);
+  }
 }
