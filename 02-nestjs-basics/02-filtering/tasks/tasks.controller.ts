@@ -15,6 +15,6 @@ export class TasksController {
     @Query("sortBy", new ParseEnumPipe(SortByEnum, {optional: true}))
     sortBy?: SortBy,
   ) {
-    return this.tasksService.getTasks(status, page, limit, sortBy as any);
+    return this.tasksService.getTasks(status, page, limit, sortBy);
   }
 }
