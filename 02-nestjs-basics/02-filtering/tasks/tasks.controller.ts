@@ -1,15 +1,20 @@
-import { Controller, Get, Query } from "@nestjs/common";
+import { Controller, Get, ParseEnumPipe, Query } from "@nestjs/common";
 import { TasksService } from "./tasks.service";
-import { TaskStatus } from "./task.model";
+import { SortBy, SortByEnum, TaskStatus } from "./task.model";
 
 @Controller("tasks")
 export class TasksController {
-  constructor(private readonly tasksService: TasksService) {}
+  constructor(private readonly tasksService: TasksService) {
+  }
 
   @Get()
   getTasks(
     @Query("status") status?: TaskStatus,
     @Query("page") page?: number,
     @Query("limit") limit?: number,
-  ) {}
+    @Query("sortBy", new ParseEnumPipe(SortByEnum, {optional: true}))
+    sortBy?: SortBy,
+  ) {
+    return this.tasksService.getTasks(status, page, limit, sortBy);
+  }
 }
