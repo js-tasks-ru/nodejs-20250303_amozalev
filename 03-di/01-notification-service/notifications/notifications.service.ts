@@ -1,17 +1,12 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
 import { BadRequestException, Injectable } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
 
 @Injectable()
 export class NotificationsService {
   private readonly logFile = path.resolve(__dirname, "file.log");
 
-  constructor(private configService: ConfigService) {
-    const emailSender = configService.get("SENDER_EMAIl");
-    const smsGateway = configService.get("SMS_GATEWAY");
-    console.log("Configuration:", emailSender, smsGateway);
-  }
+  constructor() {}
 
   sendEmail(to: string, subject: string, message: string): void {
     if (!to) {
