@@ -51,7 +51,7 @@ export class TasksService {
 
     this.notificationsService.sendSMS(
       user.phone,
-      `Статус задачи "${updateTaskDto.title ?? task.title}" обновлён на "completed"`,
+      `Статус задачи "${updateTaskDto.title ?? task.title}" обновлён на "${updateTaskDto.status}"`,
     );
 
     Object.assign(task, updateTaskDto);

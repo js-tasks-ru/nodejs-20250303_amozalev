@@ -10,19 +10,19 @@ export class NotificationsService {
 
   sendEmail(to: string, subject: string, message: string): void {
     if (!to) {
-      throw new BadRequestException("Поле Email пустое");
+      throw new BadRequestException("Email пустой");
     }
 
-    const logMsg = `Email sent to ${to}: [Новая задача] Вы назначены ответственным за задачу: "${subject}"`;
+    const logMsg = `Email sent to ${to}: [${subject}] ${message}`;
     this.log(logMsg);
   }
 
   sendSMS(to: string, message: string): void {
     if (!to) {
-      throw new BadRequestException("Поле Email пустое");
+      throw new BadRequestException("Номер телефона пустой");
     }
 
-    const logMsg = `SMS sent to ${to}: Статус задачи "Сделать домашнюю работу" изменён на "completed"`;
+    const logMsg = `SMS sent to ${to}: ${message}`;
     this.log(logMsg);
   }
 
