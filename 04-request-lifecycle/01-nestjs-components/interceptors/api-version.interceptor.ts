@@ -12,8 +12,8 @@ export class ApiVersionInterceptor implements NestInterceptor {
     return next.handle().pipe(
       map((data) => {
         Object.assign(data, {
-          apiVersion: '1.0',
-          executionTime: Date.now() - now
+          apiVersion: "1.0",
+          executionTime: `${Date.now() - now}ms`,
         });
         return data;
       }),

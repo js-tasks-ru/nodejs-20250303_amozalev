@@ -7,6 +7,11 @@ import {
 export class RolesGuard implements CanActivate {
   canActivate(context: ExecutionContext) {
     const request = context.switchToHttp().getRequest();
-    return request.headers["x-role"] === "admin";
+    const role: string | undefined = request.headers["x-role"];
+    if (role === "admin") {
+      return true;
+    }
+
+    throw new ForbiddenException("Доступ запрещён: требуется роль admin");
   }
 }
