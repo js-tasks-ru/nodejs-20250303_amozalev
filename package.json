@@ -13,6 +13,7 @@
   "dependencies": {
     "@jest/globals": "^29.7.0",
     "@nestjs/common": "^10.0.0",
+    "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^10.0.0",
     "@nestjs/mapped-types": "^2.0.6",
     "@nestjs/mongoose": "^10.1.0",
@@ -25,7 +26,7 @@
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
     "sqlite3": "^5.1.7",
-    "typeorm": "^0.3.20"
+    "typeorm": "^0.3.21"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",
