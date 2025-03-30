@@ -27,8 +27,8 @@ export class TasksController {
   }
 
   @Get()
-  findAll() {
-    return this.tasksService.findAll();
+  findAll(@Query("page") page?: number, @Query("limit") limit?: number) {
+    return this.tasksService.findAll(page, limit);
   }
 
   @Get(":id")
