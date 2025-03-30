@@ -32,10 +32,12 @@ export class TasksService {
     }
   }
 
-  async remove(id: number): Promise<boolean> {
+  async remove(id: number): Promise<{message: string} | undefined> {
     const res = await this.taskRepository.delete(id);
     if (res?.affected > 0) {
-      return true;
+      return {
+        message: "Task deleted successfully",
+      };
     }
   }
 }
