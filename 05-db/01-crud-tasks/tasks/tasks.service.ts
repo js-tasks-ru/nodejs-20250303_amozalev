@@ -15,9 +15,9 @@ export class TasksService {
     return this.taskRepository.save(createTaskDto);
   }
 
-  async findAll(page?: number, limit?: number): Promise<Task[]> {
+  async findAll(page = 1, limit?: number): Promise<Task[]> {
     return this.taskRepository.find(
-      page && limit ? { skip: (page - 1) * limit, take: limit } : {},
+      limit ? { skip: (page - 1) * limit, take: limit } : {},
     );
   }
 

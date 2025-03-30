@@ -28,7 +28,8 @@ export class TasksController {
 
   @Get()
   findAll(@Query("page") page?: number, @Query("limit") limit?: number) {
-    return this.tasksService.findAll(page, limit);
+    const numPage = isNaN(page) ? 1 : page;
+    return this.tasksService.findAll(numPage, limit);
   }
 
   @Get(":id")
