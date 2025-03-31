@@ -1,22 +1,64 @@
-import { Controller, Get, Post, Patch, Delete } from "@nestjs/common";
+import {
+  Controller,
+  Get,
+  Post,
+  Patch,
+  Delete,
+  HttpException,
+  HttpStatus,
+  Body,
+  Param,
+  Query,
+} from "@nestjs/common";
 import { TasksService } from "./tasks.service";
+import { CreateTaskDto } from "./dto/create-task.dto";
+import { UpdateTaskDto } from "./dto/update-task.dto";
+import { FindOneParams } from "./task.model";
+
+const TASK_NOT_FOUND_MSG = "Task with such Id does not exist";
 
 @Controller("tasks")
 export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
 
   @Post()
-  create() {}
+  async create(@Body() task: CreateTaskDto) {
+    return await this.tasksService.create(task);
+  }
 
   @Get()
-  findAll() {}
+  findAll(@Query("page") page?: number, @Query("limit") limit?: number) {
+    const numPage = isNaN(page) ? 1 : page;
+    return this.tasksService.findAll(numPage, limit);
+  }
 
   @Get(":id")
-  findOne() {}
+  async findOne(@Param() { id }: FindOneParams) {
+    const task = await this.tasksService.findOne(id);
+    if (task) {
+      return task;
+    }
+
+    throw new HttpException(TASK_NOT_FOUND_MSG, HttpStatus.NOT_FOUND);
+  }
 
   @Patch(":id")
-  update() {}
+  async update(@Param() { id }: FindOneParams, @Body() task: UpdateTaskDto) {
+    const updatedTask = await this.tasksService.update(id, task);
+    if (updatedTask) {
+      return updatedTask;
+    }
+
+    throw new HttpException(TASK_NOT_FOUND_MSG, HttpStatus.NOT_FOUND);
+  }
 
   @Delete(":id")
-  remove() {}
+  async remove(@Param() { id }: FindOneParams) {
+    const task = await this.tasksService.remove(id);
+    if (task) {
+      return task;
+    }
+
+    throw new HttpException(TASK_NOT_FOUND_MSG, HttpStatus.NOT_FOUND);
+  }
 }
