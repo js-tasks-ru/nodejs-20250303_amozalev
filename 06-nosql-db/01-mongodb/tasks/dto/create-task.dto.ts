@@ -1,15 +1,39 @@
-import { IsBoolean, IsNotEmpty, IsOptional, IsString } from "class-validator";
+import {
+  IsBoolean,
+  IsDateString,
+  IsEnum,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  MinLength,
+} from "class-validator";
+
+export enum Prioriry {
+  MINOR = "Minor",
+  NORMAL = "Normal",
+  MAJOR = "Major",
+  CRITICAL = "Critical",
+}
 
 export class CreateTaskDto {
-  @IsString()
   @IsNotEmpty()
+  @IsString()
+  @MinLength(5)
   title: string;
 
-  @IsString()
   @IsNotEmpty()
+  @IsString()
   description: string;
 
-  @IsBoolean()
   @IsOptional()
+  @IsDateString()
+  deadline: string;
+
+  @IsOptional()
+  @IsEnum(Prioriry)
+  priority: Prioriry;
+
+  @IsOptional()
+  @IsBoolean()
   isCompleted: boolean;
 }

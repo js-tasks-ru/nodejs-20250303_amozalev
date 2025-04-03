@@ -1,5 +1,7 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { HydratedDocument } from "mongoose";
+import { Prioriry } from "../dto/create-task.dto";
+import { getTomorrowDateTime } from "../../utils/utils";
 
 export type TaskDocument = HydratedDocument<Task>;
 
@@ -10,6 +12,12 @@ export class Task {
 
   @Prop({required: true})
   description: string;
+
+  @Prop({default: getTomorrowDateTime()})
+  deadline: string;
+
+  @Prop({default: Prioriry.NORMAL})
+  priority: Prioriry;
 
   @Prop({default: false})
   isCompleted: boolean;
