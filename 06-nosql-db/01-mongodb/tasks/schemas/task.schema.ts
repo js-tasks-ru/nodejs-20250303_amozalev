@@ -14,7 +14,7 @@ export class Task {
   description: string;
 
   @Prop({default: getTomorrowDateTime()})
-  deadline: string;
+  deadline: Date;
 
   @Prop({default: Prioriry.NORMAL})
   priority: Prioriry;

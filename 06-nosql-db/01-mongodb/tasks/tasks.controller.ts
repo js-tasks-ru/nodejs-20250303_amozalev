@@ -20,11 +20,7 @@ export class TasksController {
 
   @Post()
   async create(@Body() createTaskDto: CreateTaskDto) {
-    const task = await this.tasksService.create(createTaskDto);
-    if (!task) {
-      throw new NotFoundException();
-    }
-    return task;
+    return await this.tasksService.create(createTaskDto);
   }
 
   @Get()

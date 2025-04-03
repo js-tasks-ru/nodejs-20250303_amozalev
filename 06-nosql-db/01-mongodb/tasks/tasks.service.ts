@@ -10,13 +10,8 @@ export class TasksService {
   constructor(@InjectModel(Task.name) private taskModel: Model<TaskDocument>) {}
 
   async create(createTaskDto: CreateTaskDto) {
-    try {
       const task = new this.taskModel(createTaskDto);
       return await task.save();
-    } catch (error) {
-      console.error(error);
-      return error;
-    }
   }
 
   async findAll() {
