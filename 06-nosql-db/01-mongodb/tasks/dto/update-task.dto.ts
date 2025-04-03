@@ -1,5 +1,7 @@
 import { PartialType } from "@nestjs/mapped-types";
 import { CreateTaskDto } from "./create-task.dto";
-import { IsBoolean, IsOptional } from "class-validator";
+import { PickType } from "@nestjs/swagger";
 
-export class UpdateTaskDto extends PartialType(CreateTaskDto) {}
+export class UpdateTaskDto extends PartialType(
+  PickType(CreateTaskDto, ["title", "description", "isCompleted"] as const),
+) {}
