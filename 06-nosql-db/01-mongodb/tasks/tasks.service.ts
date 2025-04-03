@@ -9,10 +9,10 @@ import { Model, ObjectId } from "mongoose";
 export class TasksService {
   constructor(@InjectModel(Task.name) private taskModel: Model<TaskDocument>) {}
 
-  create(createTaskDto: CreateTaskDto) {
+  async create(createTaskDto: CreateTaskDto) {
     try {
       const task = new this.taskModel(createTaskDto);
-      return task.save();
+      return await task.save();
     } catch (error) {
       console.error(error);
       return error;
@@ -20,11 +20,11 @@ export class TasksService {
   }
 
   async findAll() {
-    return this.taskModel.find().exec();
+    return await this.taskModel.find().exec();
   }
 
   async findOne(id: ObjectId) {
-    const task = this.taskModel.findById(id).exec();
+    const task = await this.taskModel.findById(id).exec();
     if (task) {
       return task;
     }
@@ -32,7 +32,7 @@ export class TasksService {
   }
 
   async update(id: ObjectId, updateTaskDto: UpdateTaskDto) {
-    const task = this.taskModel
+    const task = await this.taskModel
       .findByIdAndUpdate(id, updateTaskDto, { new: true })
       .exec();
     if (task) {
@@ -41,8 +41,8 @@ export class TasksService {
     return null;
   }
 
-  async remove(id: ObjectId) {
-    const removed = this.taskModel.findOneAndDelete({_id: {$eq: id}}).exec();
+  async remove(_id: ObjectId) {
+    const removed = await this.taskModel.findOneAndDelete({_id}).exec();
     if (removed) {
       return removed;
     }
