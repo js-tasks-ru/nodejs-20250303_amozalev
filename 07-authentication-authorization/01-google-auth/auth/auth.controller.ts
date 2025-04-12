@@ -1,15 +1,21 @@
-import { Controller, Get, Request } from "@nestjs/common";
+import { Controller, Get, Request, UseGuards } from "@nestjs/common";
 import { AuthService } from "./auth.service";
+import { Public } from "./public.decorator";
+import { AuthGuard } from "@nestjs/passport";
 
 @Controller("auth")
 export class AuthController {
   constructor(private authService: AuthService) {}
 
+  @Public()
+  @UseGuards(AuthGuard("google"))
   @Get("google")
   google() {
     return "ok";
   }
 
+  @Public()
+  @UseGuards(AuthGuard("google"))
   @Get("google/callback")
   async googleCallback(@Request() req) {
     const result = await this.authService.login(req.user);
@@ -26,7 +32,7 @@ export class AuthController {
       <body>
         <p>wait until login is complete</p>
         <script>
-          localStorage.setItem('token', '${result.token}');
+          localStorage.setItem('token', '${result.access_token}');
           window.location.href = '/';
         </script>
       </body>
