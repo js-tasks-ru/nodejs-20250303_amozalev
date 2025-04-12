@@ -40,6 +40,7 @@ export class AuthController {
   `;
   }
 
+  @UseGuards(AuthGuard("jwt"))
   @Get("profile")
   profile(@Request() request) {
     return request.user;
