@@ -7,7 +7,7 @@ export default registerAs("oauth", () => ({
     refreshTokenExpires: "1h",
   },
   google: {
-    secret: process.env.GOOGLE_CLIENT_ID ?? "",
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
+    secret: process.env.GOOGLE_CLIENT_ID ?? "GOOGLE_CLIENT_ID",
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "GOOGLE_CLIENT_SECRET",
   },
 }));
