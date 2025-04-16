@@ -11,9 +11,9 @@ export class TasksService {
     @InjectRepository(Task) private readonly tasksRepository: Repository<Task>,
   ) {}
 
-  create(createTaskDto: CreateTaskDto) {
+  async create(createTaskDto: CreateTaskDto) {
     const task = this.tasksRepository.create(createTaskDto);
-    return this.tasksRepository.save(task);
+    return await this.tasksRepository.save(task);
   }
 
   async findAll() {
@@ -34,8 +34,8 @@ export class TasksService {
     return await this.tasksRepository.save(task);
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(id: number): Promise<Task> {
     const task = await this.findOne(id);
-    await this.tasksRepository.remove(task);
+    return await this.tasksRepository.remove(task);
   }
 }
