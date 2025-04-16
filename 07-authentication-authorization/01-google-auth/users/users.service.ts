@@ -9,15 +9,15 @@ export class UsersService {
     @InjectRepository(User) private userRepository: Repository<User>,
   ) {}
 
-  findOne(id: string) {
-    return this.userRepository.findOneBy({ id });
+  async findOne(id: string) {
+    return await this.userRepository.findOneBy({ id });
   }
 
-  create(payload: Partial<User>) {
+  async create(payload: User) {
     const user = new User();
     user.id = payload.id;
     user.displayName = payload.displayName;
     user.avatar = payload.avatar;
-    return this.userRepository.save(user);
+    return await this.userRepository.save(user);
   }
 }
