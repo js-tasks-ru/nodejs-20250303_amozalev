@@ -3,7 +3,7 @@ import { INestApplication } from "@nestjs/common";
 import * as request from "supertest";
 import { AppModule } from "../../app.module";
 import { getRepositoryToken, TypeOrmModule } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { DataSource, Repository } from "typeorm";
 import { Task } from "../entities/task.entity";
 import { CreateTaskDto } from "../dto/create-task.dto";
 import { UpdateTaskDto } from "../dto/update-task.dto";
@@ -11,6 +11,7 @@ import { UpdateTaskDto } from "../dto/update-task.dto";
 describe("TasksController (e2e)", () => {
   let app: INestApplication;
   let repository: Repository<Task>;
+  let dataSource;
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -29,15 +30,13 @@ describe("TasksController (e2e)", () => {
     await app.init();
 
     repository = moduleFixture.get(getRepositoryToken(Task));
-  });
-
-  beforeEach(async () => {
-    await repository.clear();
+    dataSource = moduleFixture.get(DataSource);
   });
 
   afterEach(async () => {
-    await repository.clear();
-  })
+    await dataSource.dropDatabase();
+    await dataSource.synchronize();
+  });
 
   afterAll(async () => {
     await app.close();
@@ -71,7 +70,7 @@ describe("TasksController (e2e)", () => {
 
   describe("GET /tasks/:id", () => {
     it("should return task by id", async () => {
-      const existingId = 2;
+      const existingId = 1;
 
       const dto: CreateTaskDto = {
         title: "First task",
@@ -85,7 +84,7 @@ describe("TasksController (e2e)", () => {
       );
       expect(response.status).toBe(200);
       expect(response.body).toEqual({
-        id: 2,
+        id: 1,
         title: "First task",
         description: "First task description",
         isCompleted: false,
@@ -110,13 +109,6 @@ describe("TasksController (e2e)", () => {
         description: "Super important task!",
       };
 
-      //TODO beforeEach repository.clear() не работает? Почему-то учитываются индексы ранее сохранённых задач:
-      // при этом задачу с id == 1 не найти. Т.е. @PrimaryGeneratedColumn в БД не обнуляется после repository.clear?
-      // в документации к clear говорится следующее: Note: this method uses TRUNCATE and may not work as you expect in transactions on some platforms.
-      const task = await repository.findOne({ where: { id: 1 } });
-      console.log("==", task);
-      //TODO end
-
       const response = await request(app.getHttpServer())
         .post(`/tasks`)
         .send(taskDto);
@@ -124,7 +116,7 @@ describe("TasksController (e2e)", () => {
       expect(response.body).toEqual({
         ...taskDto,
         id: 1,
-        isComplete: false,
+        isCompleted: false,
       });
     });
   });
